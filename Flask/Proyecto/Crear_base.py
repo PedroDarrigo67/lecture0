@@ -21,7 +21,7 @@ class Principal(db.Model):
     
 class Area(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    Area = db.Column (db.String(10), nullable=False)
+    Area = db.Column (db.String(20), nullable=False)
     id_principal = db.Column(db.Integer, db.ForeignKey('principal.id'), nullable=False)
     
 
@@ -36,6 +36,13 @@ class Cliente(db.Model):
 @app.route("/")
 def index():
     return "Inicio"
+
+@app.route("/area")
+def nuevo_area():
+    new_client = Area(Area = "Administracion")
+    db.session.add(new_client)
+    db.session.commit()
+    return "Se cargo area"    
 
 
 if __name__ == "__main__":
