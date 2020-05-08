@@ -14,11 +14,6 @@ class Posts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50))
 
-class Posts1(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(50))
-
-
 @app.route("/")
 def index():
     titulo = "Home!"
