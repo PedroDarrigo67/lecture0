@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-# https://flask-sqlalchemy.palletsprojects.com/en/2.x/queries/
+
 import os
 
 dbdir = "sqlite:///" + os.path.abspath(os.getcwd()) + "/database.db"
@@ -33,17 +33,38 @@ class Principal(db.Model):
         nullable=False)    
 
 
-@app.route("/")
-def index():
-    return render_template("index.html")
 
-@app.route("/search")
-def search():
-    nickname = request.args.get("nickname")
-    print(nickname)
-    user = Principal.query.filter_by(detalle=nickname).first()
-    print(user.id)
-    return render_template("index.html")
+@app.route("/")
+def Inicio():
+    return render_template("Index.html")
+
+
+@app.route("/Index.html")
+def Index():
+    return render_template("Index.html")
+    
+    
+
+
+@app.route("/Generar_ticket.html")
+def Generar():
+    return render_template("Generar_ticket.html") 
+
+@app.route("/Vista.html")
+def Vista():
+    Prinfecha = "12-05-20"
+    Printicket = "ticket1"
+    return render_template("Vista.html", Prinfecha = Prinfecha, Printicket = Printicket)     
+
+
+@app.route("/insert/default")
+def insert_default():
+    new_client = Principal(nroticket=4, detalle="detalle 4", fecha="12-05-20", area_id=2, cliente_id=2)
+    db.session.add(new_client)
+    db.session.commit()
+    return "Se cargo area" 
+
+
 
 
  
