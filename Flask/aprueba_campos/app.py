@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 import os
 
 dbdir = "sqlite:///" + os.path.abspath(os.getcwd()) + "/database.db"
@@ -10,6 +11,9 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = dbdir
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app) 
+
+movreg = 1
+sumreg = 6
 
  
 class Area(db.Model):
@@ -45,18 +49,13 @@ def Index():
     return render_template("Index.html")
     
 
-
-@app.route("/Generar_ticket.html")
-def Generar():
-    return render_template("Generar_ticket.html") 
-
 @app.route("/Vista.html")
 def Vista():
     global movreg 
     global sumreg
     sumreg = db.session.query(Principal).count()
     movreg = 1
-
+    
     nickname = Principal.query.filter_by(id=movreg).first() 
     Prin_id = nickname.id
     Prin_ticket = str(nickname.nroticket)
@@ -66,11 +65,12 @@ def Vista():
     Prin_cliente_id = nickname.cliente_id
     return render_template("Vista.html", Registros = sumreg, Prin_id = Prin_id, Prin_ticket = Prin_ticket, Prin_detalle = Prin_detalle, Prin_fecha = Prin_fecha, Prin_area_id = Prin_area_id, Prin_cliente_id = Prin_cliente_id )
 
-@app.route("/button")
+@app.route("/button") 
 def Proxima():
     global movreg 
     global sumreg
 
+  
     botones = request.args.get('boton')
     if botones == "adelante":
         movreg = movreg + 1
@@ -89,30 +89,6 @@ def Proxima():
     Prin_area_id = nickname.area_id
     Prin_cliente_id = nickname.cliente_id
     return render_template("Vista.html", Registros = sumreg, Prin_id = Prin_id, Prin_ticket = Prin_ticket, Prin_detalle = Prin_detalle, Prin_fecha = Prin_fecha, Prin_area_id = Prin_area_id, Prin_cliente_id = Prin_cliente_id )
- 
-
-
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    user = Principal.query.filter_by(detalle=request.form["nickname"]).first()
-    return render_template("Vista.html", Registros = sumreg, Prin_id = Prin_id, Prin_ticket = Prin_ticket, Prin_detalle = Prin_detalle, Prin_fecha = Prin_fecha, Prin_area_id = Prin_area_id, Prin_cliente_id = Prin_cliente_id )
-
-
-
-
-
-
-
-
-
-@app.route("/insert/default")
-def insert_default():
-    new_client = Principal(nroticket=4, detalle="detalle 4", fecha="12-05-20", area_id=2, cliente_id=2)
-    db.session.add(new_client)
-    db.session.commit()
-    return "Se cargo area" 
-
 
 
 

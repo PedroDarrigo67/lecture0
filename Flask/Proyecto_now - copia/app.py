@@ -52,43 +52,29 @@ def Generar():
 
 @app.route("/Vista.html")
 def Vista():
-    global movreg 
-    global sumreg
-    sumreg = db.session.query(Principal).count()
-    movreg = 1
-
-    nickname = Principal.query.filter_by(id=movreg).first() 
+    id = 1
+    nickname = Principal.query.filter_by(id=id).first() 
     Prin_id = nickname.id
     Prin_ticket = str(nickname.nroticket)
     Prin_detalle = nickname.detalle
     Prin_fecha = nickname.fecha
     Prin_area_id = nickname.area_id
     Prin_cliente_id = nickname.cliente_id
-    return render_template("Vista.html", Registros = sumreg, Prin_id = Prin_id, Prin_ticket = Prin_ticket, Prin_detalle = Prin_detalle, Prin_fecha = Prin_fecha, Prin_area_id = Prin_area_id, Prin_cliente_id = Prin_cliente_id )
+    return render_template("Vista.html", Prin_id = Prin_id, Prin_ticket = Prin_ticket, Prin_detalle = Prin_detalle, Prin_fecha = Prin_fecha, Prin_area_id = Prin_area_id, Prin_cliente_id = Prin_cliente_id )
 
 @app.route("/button")
 def Proxima():
-    global movreg 
-    global sumreg
+    max_count = 4
+    count = 2
 
-    botones = request.args.get('boton')
-    if botones == "adelante":
-        movreg = movreg + 1
-        if movreg > sumreg:
-            movreg = sumreg
-    else:  
-        movreg = movreg - 1
-        if movreg == 0:
-            movreg = 1  
-            
-    nickname = Principal.query.filter_by(id=movreg).first()
+    nickname = Principal.query.filter_by(id=2).first() 
     Prin_id = nickname.id
     Prin_ticket = str(nickname.nroticket)
     Prin_detalle = nickname.detalle
     Prin_fecha = nickname.fecha
     Prin_area_id = nickname.area_id
     Prin_cliente_id = nickname.cliente_id
-    return render_template("Vista.html", Registros = sumreg, Prin_id = Prin_id, Prin_ticket = Prin_ticket, Prin_detalle = Prin_detalle, Prin_fecha = Prin_fecha, Prin_area_id = Prin_area_id, Prin_cliente_id = Prin_cliente_id )
+    return render_template("Vista.html", Prin_id = Prin_id, Prin_ticket = Prin_ticket, Prin_detalle = Prin_detalle, Prin_fecha = Prin_fecha, Prin_area_id = Prin_area_id, Prin_cliente_id = Prin_cliente_id )
  
 
 
@@ -96,7 +82,7 @@ def Proxima():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     user = Principal.query.filter_by(detalle=request.form["nickname"]).first()
-    return render_template("Vista.html", Registros = sumreg, Prin_id = Prin_id, Prin_ticket = Prin_ticket, Prin_detalle = Prin_detalle, Prin_fecha = Prin_fecha, Prin_area_id = Prin_area_id, Prin_cliente_id = Prin_cliente_id )
+    return render_template("login.html")
 
 
 
