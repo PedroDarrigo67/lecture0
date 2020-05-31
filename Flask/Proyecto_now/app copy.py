@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -10,7 +10,17 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = dbdir
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app) 
- 
+
+Prin_id_lista = ['PR']
+Prin_nroticket_lista = [1]
+Prin_detalle_lista = ['PR']
+Prin_fecha_lista = ['PR']
+Prin_area_id_lista = [1]
+Prin_cliente_id_lista = [1]
+
+movreg = 1
+sumreg = 6
+
 class Area(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     Area = db.Column (db.String(20), nullable=False, unique=True)
@@ -32,61 +42,116 @@ class Principal(db.Model):
     cliente_id = db.Column(db.Integer, db.ForeignKey('cliente.id'),
         nullable=False)    
 
-
-
 @app.route("/")
 def Inicio():
     return render_template("Index.html")
 
-
 @app.route("/Index.html")
 def Index():
     return render_template("Index.html")
-    
-
-
-@app.route("/Generar_ticket.html")
-def Generar():
-    return render_template("Generar_ticket.html") 
 
 @app.route("/Vista.html")
 def Vista():
-    nickname = "detalle1"
-    
-    nickname = Principal.query.filter_by(detalle=nickname).first() 
+    global movreg 
+    global sumreg
+    movreg = 1
+    sumreg = db.session.query(Principal).count()
+    if Prin_id_lista[0] == 'PR': 
+        Prin_id_lista.remove('PR')
+        Prin_nroticket_lista.remove(1)
+        Prin_detalle_lista.remove('PR')
+        Prin_fecha_lista.remove('PR')
+        #Prin_area_id_lista.remove = (1)
+        #Prin_cliente_id_lista.remove = (1)
+    while movreg < sumreg:
+        nickname = Principal.query.filter_by(id=movreg).first()
+        Prin_id_lista.insert(movreg, nickname.id)
+        Prin_nroticket_lista.insert(movreg, nickname.nroticket)
+        Prin_detalle_lista.insert(movreg, nickname.detalle)
+        Prin_fecha_lista.insert(movreg, nickname.fecha)
+        Prin_area_id_lista.insert(movreg, nickname.area)
+        Prin_cliente_id_lista.insert(movreg, nickname.cliente)
+        movreg = movreg + 1
+    return render_template("Vista.html", sumreg = sumreg, Prin_id_lista = Prin_id_lista, Prin_nroticket_lista = Prin_nroticket_lista, Prin_detalle_lista=Prin_detalle_lista, Prin_fecha_lista=Prin_fecha_lista, Prin_area_id_lista=Prin_area_id_lista, Prin_cliente_id_lista=Prin_cliente_id_lista)
+
+
+@app.route("/Generar", methods=["GET", "POST"])
+def nuevo1():
+    return render_template("Generar.html") 
+
+@app.route("/Generar.html", methods=["GET", "POST"])
+def nuevo():
+    global sumreg
+    sumreg = db.session.query(Principal).count()
+    sumreg = sumreg + 1
+    if request.method == "POST":
+        detalles = request.form["detalle"]
+        fechas = request.form["fecha"]
+
+        nroticket = 1000 + sumreg
+        new_client = Principal(nroticket=nroticket, detalle=detalles, fecha=fechas, area_id=2, cliente_id=1)
+        db.session.add(new_client)
+        db.session.commit()
+    return render_template("Generar.html") 
+
+@app.route("/Editar.html")
+def Vista():
+    global movreg 
+    global sumreg
+    sumreg = db.session.query(Principal).count()
+    movreg = 1
+    nickname = Principal.query.filter_by(id=movreg).first() 
     Prin_id = nickname.id
     Prin_ticket = str(nickname.nroticket)
     Prin_detalle = nickname.detalle
     Prin_fecha = nickname.fecha
-    Prin_area_id = nickname.area_id
-    Prin_cliente_id = nickname.cliente_id
-    return render_template("Vista.html", Prin_id = Prin_id, Prin_ticket = Prin_ticket, Prin_detalle = Prin_detalle, Prin_fecha = Prin_fecha, Prin_area_id = Prin_area_id, Prin_cliente_id = Prin_cliente_id )
+    if nickname.area_id == 1:
+        Prin_area_id = "Gerencia"
+    elif nickname.area_id == 2:
+            Prin_area_id = "Proyectos"
+    elif nickname.area_id == 3:
+        Prin_area_id = "Servicio Tecnico"
+    
+    if nickname.cliente_id ==1:
+        Prin_cliente_id = "Jardin Claret"
+    elif nickname.cliente_id ==2:
+        Prin_cliente_id = "El Bosque"
+    elif nickname.cliente_id ==3:
+        Prin_cliente_id = "Canuelas"
+    return render_template("Editar.html", Registros = sumreg, Prin_id = Prin_id, Prin_ticket = Prin_ticket, Prin_detalle = Prin_detalle, Prin_fecha = Prin_fecha, Prin_area_id = Prin_area_id, Prin_cliente_id = Prin_cliente_id )
 
-
-
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    user = Principal.query.filter_by(detalle=request.form["nickname"]).first()
-    return render_template("login.html")
-
-
-
-
-
-
-
-
-
-@app.route("/insert/default")
-def insert_default():
-    new_client = Principal(nroticket=4, detalle="detalle 4", fecha="12-05-20", area_id=2, cliente_id=2)
-    db.session.add(new_client)
-    db.session.commit()
-    return "Se cargo area" 
-
-
-
+@app.route("/button")
+def Proxima():
+    global movreg 
+    global sumreg
+    botones = request.args.get('boton')
+    if botones == "adelante":
+        movreg = movreg + 1
+        if movreg > sumreg:
+            movreg = sumreg
+    else:  
+        movreg = movreg - 1
+        if movreg == 0:
+            movreg = 1  
+    nickname = Principal.query.filter_by(id=movreg).first()
+    Prin_id = nickname.id
+    Prin_ticket = str(nickname.nroticket)
+    Prin_detalle = nickname.detalle
+    Prin_fecha = nickname.fecha
+    if nickname.area_id == 1:
+        Prin_area_id = "Gerencia"
+    elif nickname.area_id == 2:
+            Prin_area_id = "Proyectos"
+    elif nickname.area_id == 3:
+        Prin_area_id = "Servicio Tecnico"
+    if nickname.cliente_id ==1:
+        Prin_cliente_id = "Jardin Claret"
+    elif nickname.cliente_id ==2:
+        Prin_cliente_id = "El Bosque"
+    elif nickname.cliente_id ==3:
+        Prin_cliente_id = "Canuelas"
+    return render_template("Editar.html", Registros = sumreg, Prin_id = Prin_id, Prin_ticket = Prin_ticket, Prin_detalle = Prin_detalle, Prin_fecha = Prin_fecha, Prin_area_id = Prin_area_id, Prin_cliente_id = Prin_cliente_id )
+ 
 
  
 if __name__ == "__main__":

@@ -18,9 +18,6 @@
     </div>
     <nav>
       
-
-
-      
       <li class="even">
         <article><img src="../static/images/logo.png" alt="">
           
@@ -30,8 +27,6 @@
     <div class="clear"></div>
   </header>
 </div>
-
-
 
 <!-- content -->
 <div class="wrapper row2">
@@ -43,53 +38,33 @@
       <!-- CUERPO SUPERIOR -->
       <section>
         <article>
-          <h2>Vista Tickets - Cant de Registros = {{sumreg}}</h2>
-
-  {# campo nuevo de prueba #}    
-  <p>&nbsp;</p>
-  <table border="1" style="width:70%;">
-        <style>
-  table {
-    border-collapse: collapse;
-  }
-  th, td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: left;
-  }
-  tr:nth-child(even) {
-    background-color: #eee;
-  }
-  tr:nth-child(odd) {
-    background-color: #fff;
-  }            
-</style>   
- <tr>
-      <th>ID</td>
-      <th># Ticket</td>
-		  <th>Detalle</td>
-      <th>Fecha</td>
-      <th>Area</td>
-      <th>Cliente</td>
-    </tr>
-  {% for i in range(sumreg) %}  
-    <tr>
-      <td>{{Prin_id_lista[i]}}</td>
-      <td>{{Prin_nroticket_lista[i]}}</td>
-		  <td>{{Prin_detalle_lista[i]}}</td>
-      <td>{{Prin_fecha_lista[i]}}</td>
-      <td>{{Prin_area_id_lista[i]}}</td>
-      <td>{{Prin_cliente_id_lista[i]}}</td>
-    </tr>
-    {% set cont = i %} 
-    {% set i = cont + 1 %} 
-  {% endfor -%}
-</table>
-{#  fin cuerpo medio  #}  
+          <h2>Vista Tickets</h2>
+          <address>
+          Dato de la consulta
+          </address>
+          <p>&nbsp;</p>
+          <h1>Cantidad de Registros= {{Registros}}</h1>
+          <p>&nbsp;</p>
+          <h1>Id = {{Prin_id}}</h1>
+          <h1>Ticket = {{Prin_ticket}}</h1>
+          <h1>Detalle = {{Prin_detalle}}</h1>
+          <h1>Fecha = {{Prin_fecha}}</h1>
+          <h1>Area = {{Prin_area_id}}</h1>
+          <h1>Cliente = {{Prin_cliente_id}}</h1>
+          
+          
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <p>&nbsp;</p>
+          <form method = "get" action = "button">
+            <button type="submit" name ="boton" value="atras">Atras!</button>
+            <button type="submit" name ="boton" value="adelante">Adelante!</button>
+          </form>
           
           
           
-        
+          <p style="margin-left: 350px;"><span style="font-size:9px;">Por favor utilice el indice izquierdo para poder navegar por el sistema</span></p>
+         
           
         </article>
         
