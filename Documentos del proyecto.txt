@@ -1,3 +1,0 @@
-Trabajo con bases de datos
-
-https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/
