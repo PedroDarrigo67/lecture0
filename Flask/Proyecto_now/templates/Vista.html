@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<title>Generacion Ticket</title>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="../static/images/logo.ico" >
+<link rel="stylesheet" href="../static/styles/layout.css" type="text/css">
+<!--[if lt IE 9]><script src="scripts/html5shiv.js"></script><![endif]-->
+</head>
+<body>
+
+<!--Menu superior--> 
+<div class="wrapper row1">
+  <header id="header" class="clear">
+    <div id="hgroup">
+      <h1><a href="#">Generacion Ticket</a></h1>
+      <h2>Intranet Servicio Tecnico</h2>
+    </div>
+    <nav>
+      
+
+
+      
+      <li class="even">
+        <article><img src="../static/images/logo.png" alt="">
+          
+        </article>
+      </li
+    </nav>
+    <div class="clear"></div>
+  </header>
+</div>
+
+
+
+<!-- content -->
+<div class="wrapper row2">
+  <div id="container">
+    <!-- content body -->
+    <div id="content">
+      
+      
+      <!-- CUERPO SUPERIOR -->
+      <section>
+        <article>
+          <h2>Vista Tickets - Cant de Registros = {{sumreg}}</h2>
+
+  {# campo nuevo de prueba #}    
+  <p>&nbsp;</p>
+  <table border="1" style="width:100%;">
+        <style>
+  table {
+    border-collapse: collapse;
+  }
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  tr:nth-child(even) {
+    background-color: #eee;
+  }
+  tr:nth-child(odd) {
+    background-color: #fff;
+  }            
+</style>   
+ <tr>
+      <th>ID</td>
+      <th># Ticket</td>
+		  <th>Detalle</td>
+      <th>Fecha</td>
+      <th>Area</td>
+      <th>Cliente</td>
+    </tr>
+  {% for i in range(sumreg) %}  
+    <tr>
+      <td>{{Prin_id_lista[i]}}</td>
+      <td>{{Prin_nroticket_lista[i]}}</td>
+		  <td>{{Prin_detalle_lista[i]}}</td>
+      <td>{{Prin_fecha_lista[i]}}</td>
+      <td>{{Prin_area_id_lista[i]}}</td>
+      <td>{{Prin_cliente_id_lista[i]}}</td>
+    </tr>
+    {% set cont = i %} 
+    {% set i = cont + 1 %} 
+  {% endfor -%}
+</table>
+{#  fin cuerpo medio  #}  
+          
+          
+          
+        
+          
+        </article>
+        
+        <!-- CUERPO INFERIOR -->
+        
+       
+      
+        
+
+        <!-- / articles -->
+      </section>
+      <!-- section 2 -->
+      <section id="services" class="last clear">
+       
+      </section>
+    </div>
+    <!-- right column -->
+    <aside id="right_column">
+    
+
+      <h2 class="title">Links</h2>
+      <nav>
+        <ul>
+          <li><a href="Index.html">Index</a></li>
+          <li><a href="Generar.html" style="color:rgb(11, 9, 155)">Generar nuevo ticket</a></li>
+          <li><a href="#">Editar ticket existente</a></li>
+          <li><a href="#">Cerrar ticket</a></li>
+          <p>&nbsp;</p>
+          <li class="last"><a href="#"; style="color:rgb(161, 11, 149)">Ver consulta</a></li>
+          <li class="last"><a href="#">Informe tickets abiertos</a></li>
+          <li class="last"><a href="#">Informe tickets cerrados</a></li>
+        </ul>
+      </nav>
+      
+      
+    </aside>
+    <!-- / content body -->
+    <div class="clear"></div>
+  </div>
+</div>
+<!-- footer -->
+
+</body>
+</html>
